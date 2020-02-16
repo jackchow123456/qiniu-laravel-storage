@@ -425,7 +425,9 @@ class QiniuAdapter extends AbstractAdapter
      */
     public function read($path)
     {
-        $location = $this->applyPathPrefix($path);
+        $location = $this->access === self::ACCESS_PRIVATE
+            ? $this->privateDownloadUrl($path)->getUrl()
+            : $this->applyPathPrefix($path);
 
         return ['contents' => file_get_contents($location)];
     }
